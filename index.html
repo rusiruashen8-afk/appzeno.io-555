@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppZeno.io — AI Agent Mobile App Builder</title>
+    <!-- නිවැරදි CDN සහ Font ලින්ක්ස් මෙන්න head එකට දැම්මා -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #09090b;
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .font-mono {
+            font-family: 'Fira Code', monospace;
+        }
+        .glow-bg {
+            background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.25) 0%, rgba(9, 9, 11, 0) 60%);
+        }
+        .platform-btn.active {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+        .glass-card {
+            background: rgba(24, 24, 27, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .popular-card {
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.15) 0%, rgba(24, 24, 27, 0.9) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
+        }
+        /* Mobile Phone Frame */
+        .phone-mockup {
+            width: 300px;
+            height: 580px;
+            border: 10px solid #27272a;
+            border-radius: 40px;
+            background: #ffffff;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        .phone-notch {
+            width: 110px;
+            height: 22px;
+            background: #27272a;
+            border-bottom-left-radius: 14px;
+            border-bottom-right-radius: 14px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+        }
+        /* Custom Scrollbar for Code Box */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #18181b; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
+    </style>
+</head>
+<body class="glow-bg min-h-screen flex flex-col justify-between">
+
+    <!-- Navbar -->
+    <nav class="w-full max-w-7xl mx-auto px-6 py-4 flex justify-between items-center border-b border-zinc-800/60 sticky top-0 bg-zinc-950/85 backdrop-blur-md z-40">
+        <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-extrabold text-xl shadow-lg">
+                Z
+            </div>
+            <span class="text-xl font-bold tracking-tight">AppZeno<span class="text-indigo-400">.io</span></span>
+        </div>
+
+        <div class="hidden md:flex items-center gap-8 text-sm text-zinc-400 font-medium">
+            <a href="#builder" class="hover:text-white transition">AI Workspace</a>
+            <a href="#pricing" class="hover:text-white transition">Pricing & Credits</a>
+            <a href="#api-config" onclick="openApiModal()" class="hover:text-indigo-400 transition flex items-center gap-1.5">
+                <i class="fa-solid fa-key text-xs"></i> API Settings
+            </a>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <!-- Live Credit Wallet Display -->
+            <div id="credit-wallet" class="hidden items-center gap-2 bg-indigo-500/10 border border-indigo-500/30 px-3.5 py-1.5 rounded-full">
+                <i class="fa-solid fa-coins text-amber-400 text-xs"></i>
+                <span class="text-xs font-bold text-white"><span id="nav-credits">0</span> Credits</span>
+                <span class="text-[10px] bg-indigo-500/30 text-indigo-200 px-2 py-0.5 rounded-full" id="nav-plan">Free</span>
+            </div>
+
+            <div id="auth-section">
+                <button onclick="openLoginModal()" class="flex items-center gap-2.5 bg-white text-zinc-900 hover:bg-zinc-200 font-semibold text-sm px-4 py-2 rounded-full transition shadow-md cursor-pointer">
+                    <i class="fa-brands fa-google text-sm"></i>
+                    <span>Sign in with Google</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero & AI Builder Workspace -->
+    <main id="builder" class="max-w-7xl mx-auto px-6 pt-12 pb-20 text-center w-full">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold mb-5">
+            <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+            Autonomous AI App Agent • 1 App = 1 Credit
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-4">
+            Describe your app. Watch our <br class="hidden md:block">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">AI Agent code & launch it live.</span>
+        </h1>
+        <p class="text-zinc-400 text-base md:text-lg max-w-2xl mx-auto mb-10">
+            Select Android or iOS, enter your idea, and watch the AI write real code, render a live mobile preview, and generate a shareable app link.
+        </p>
+
+        <!-- Prompt Box Container -->
+        <div class="glass-card rounded-2xl p-5 md:p-6 text-left shadow-2xl max-w-4xl mx-auto">
+            <!-- User Status Bar -->
+            <div id="builder-stats" class="hidden mb-4 pb-3 border-b border-zinc-800 flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-400">
+                <div>Active Plan: <strong id="stat-plan" class="text-white">None</strong> (<span id="stat-expiry">No active plan</span>)</div>
+                <div>Today's Usage: <strong id="stat-daily" class="text-indigo-400">0 / 0</strong> apps</div>
+                <div>Remaining Balance: <strong id="stat-credits" class="text-amber-400">0 Credits</strong></div>
+            </div>
+
+            <label for="app-prompt" class="block text-sm md:text-base font-semibold text-zinc-200 mb-3 flex items-center justify-between">
+                <span>What you want to build today?</span>
+                <span class="text-xs text-zinc-400 font-normal"><i class="fa-solid fa-bolt text-amber-400 mr-1"></i> Cost: 1 Credit / App</span>
+            </label>
+
+            <!-- Textarea -->
+            <textarea id="app-prompt" rows="3" 
+                class="w-full bg-zinc-900/90 border border-zinc-700/80 rounded-xl p-4 text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-500 transition resize-none text-sm md:text-base"
+                placeholder="e.g., Build a modern food delivery app with burger menu, cart, and order tracking..."></textarea>
+
+            <!-- Platform Selection Buttons + Generate Button -->
+            <div class="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                
+                <!-- Android & iOS Buttons -->
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <button type="button" id="btn-android" onclick="selectPlatform('Android')" 
+                        class="platform-btn active flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-zinc-700 text-sm font-semibold text-zinc-300 transition cursor-pointer">
+                        <i class="fa-brands fa-android text-lg"></i>
+                        <span>Android App</span>
+                    </button>
+
+                    <button type="button" id="btn-ios" onclick="selectPlatform('iOS')" 
+                        class="platform-btn flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-zinc-700 text-sm font-semibold text-zinc-300 hover:border-zinc-500 transition cursor-pointer">
+                        <i class="fa-brands fa-apple text-lg"></i>
+                        <span>iOS App</span>
+                    </button>
+                </div>
+
+                <!-- Generate Action Button -->
+                <button onclick="generateApp()" id="generate-btn"
+                    class="w-full sm:w-auto bg-white text-zinc-950 hover:bg-zinc-200 font-bold text-sm px-6 py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg cursor-pointer">
+                    <i class="fa-solid fa-wand-magic-sparkles text-indigo-600"></i>
+                    <span>Generate App (1 Credit)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- LIVE AI AGENT WORKSPACE -->
+        <div id="ai-workspace" class="hidden mt-10 max-w-6xl mx-auto text-left">
+            
+            <!-- Thinking AI Agent Status Banner -->
+            <div class="glass-card rounded-2xl p-4 mb-6 border-indigo-500/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div id="agent-spinner" class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                        <i class="fa-solid fa-brain fa-beat-fade"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span id="agent-status-title" class="text-sm font-bold text-white">AI Agent is Architecting UI & Logic...</span>
+                            <span class="text-[11px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono" id="selected-platform-badge">Android</span>
+                        </div>
+                        <p id="agent-status-desc" class="text-xs text-zinc-400 mt-0.5">Generating responsive components, state management, and native styling...</p>
+                    </div>
+                </div>
+                
+                <!-- Share / Deploy Link Box -->
+                <div id="share-box" class="hidden items-center gap-2 w-full md:w-auto">
+                    <input type="text" id="app-share-url" readonly value="https://appzeno.io/preview/app-8942x" 
+                        class="bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs px-3 py-2 rounded-lg w-full md:w-56 font-mono focus:outline-none">
+                    <button onclick="copyShareLink()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition cursor-pointer flex items-center gap-1.5">
+                        <i class="fa-regular fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+
+            <!-- Split Screen: Live Code Terminal + Live Phone Mockup -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Side: Live Generated Code -->
+                <div class="lg:col-span-7 glass-card rounded-2xl overflow-hidden border border-zinc-800 shadow-xl">
+                    <div class="bg-zinc-900/90 px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                            <span class="text-xs font-mono text-zinc-400 ml-2" id="code-filename">App.tsx • React Native</span>
+                        </div>
+                        <button onclick="copyCode()" class="text-xs text-zinc-400 hover:text-white transition flex items-center gap-1 cursor-pointer">
+                            <i class="fa-regular fa-code"></i> Copy Code
+                        </button>
+                    </div>
+                    <pre class="p-4 text-xs font-mono text-indigo-300 overflow-x-auto h-[520px] leading-relaxed bg-zinc-950/60"><code id="live-code-output">// Waiting for prompt to generate source code...</code></pre>
+                </div>
+
+                <!-- Right Side: Live Mobile Phone Preview -->
+                <div class="lg:col-span-5 flex flex-col items-center justify-center">
+                    <div class="phone-mockup flex flex-col">
+                        <div class="phone-notch"></div>
+                        <div class="bg-zinc-900 text-white text-[10px] px-6 pt-2 pb-1.5 flex justify-between items-center font-semibold">
+                            <span>9:41</span>
+                            <div class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-signal"></i>
+                                <i class="fa-solid fa-wifi"></i>
+                                <i class="fa-solid fa-battery-full"></i>
+                            </div>
+                        </div>
+                        <div id="phone-screen-content" class="flex-1 bg-zinc-50 text-zinc-900 p-4 overflow-y-auto flex flex-col justify-between">
+                            <div class="text-center my-auto">
+                                <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mx-auto mb-3 text-xl">
+                                    <i class="fa-solid fa-mobile-screen-button"></i>
+                                </div>
+                                <h3 class="font-bold text-sm text-zinc-800">Live App Preview</h3>
+                                <p class="text-xs text-zinc-500 mt-1">Your generated UI will render interactively right here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="text-xs text-zinc-500 mt-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check text-emerald-400"></i> Interactive Live Emulator
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="max-w-7xl mx-auto px-6 py-20 border-t border-zinc-800/60 w-full">
+        <div class="text-center max-w-2xl mx-auto mb-14">
+            <h2 class="text-3xl md:text-4xl font-extrabold mb-3">Simple, Credit-Based Pricing</h2>
+            <p class="text-zinc-400 text-sm md:text-base">Pay only for what you build. 1 Credit = 1 Complete Android or iOS App Generation.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <!-- Starter Plan -->
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white">Starter</h3>
+                    <p class="text-xs text-zinc-400 mt-1">Perfect for testing your first ideas</p>
+                    <div class="my-6">
+                        <span class="text-4xl font-extrabold">$9</span>
+                        <span class="text-zinc-400 text-sm"> / 15 Credits</span>
+                    </div>
+                    <ul class="space-y-3 text-sm text-zinc-300 mb-8">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> 15 App Generations</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Android & iOS Export</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Live Shareable Preview Link</li>
+                    </ul>
+                </div>
+                <button onclick="buyCredits(15, 'Starter')" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-sm transition cursor-pointer">Get Starter</button>
+            </div>
+
+            <!-- Pro Builder -->
+            <div class="popular-card rounded-2xl p-6 flex flex-col justify-between relative">
+                <span class="absolute -top-3 right-6 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">Most Popular</span>
+                <div>
+                    <h3 class="text-lg font-bold text-white">Pro Builder</h3>
+                    <p class="text-xs text-indigo-200/70 mt-1">For indie hackers & fast shippers</p>
+                    <div class="my-6">
+                        <span class="text-4xl font-extrabold">$24</span>
+                        <span class="text-zinc-400 text-sm"> / 50 Credits</span>
+                    </div>
+                    <ul class="space-y-3 text-sm text-zinc-200 mb-8">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> 50 App Generations</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Full Source Code Download</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Priority AI Agent Speed</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Custom API Integration</li>
+                    </ul>
+                </div>
+                <button onclick="buyCredits(50, 'Pro Builder')" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 hover:opacity-90 text-white font-bold text-sm transition shadow-lg cursor-pointer">Upgrade to Pro</button>
+            </div>
+
+            <!-- Agency Plan -->
+            <div class="glass-card rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white">Agency</h3>
+                    <p class="text-xs text-zinc-400 mt-1">Unlimited scale for client projects</p>
+                    <div class="my-6">
+                        <span class="text-4xl font-extrabold">$69</span>
+                        <span class="text-zinc-400 text-sm"> / 200 Credits</span>
+                    </div>
+                    <ul class="space-y-3 text-sm text-zinc-300 mb-8">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> 200 App Generations</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> White-label Preview Links</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> 24/7 Dedicated Support</li>
+                    </ul>
+                </div>
+                <button onclick="buyCredits(200, 'Agency')" class="w-full py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-sm transition cursor-pointer">Choose Agency</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-800/60 py-8 text-center text-xs text-zinc-500">
+        <p>© 2026 AppZeno.io — Autonomous AI Mobile App Builder. All rights reserved.</p>
+    </footer>
+
+    <!-- Frontend Logic -->
+    <script>
+        let selectedPlatform = 'Android';
+        let userCredits = 3;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('credit-wallet').classList.remove('hidden');
+            document.getElementById('credit-wallet').classList.add('flex');
+            document.getElementById('nav-credits').innerText = userCredits;
+        });
+
+        function selectPlatform(platform) {
+            selectedPlatform = platform;
+            document.getElementById('btn-android').classList.toggle('active', platform === 'Android');
+            document.getElementById('btn-ios').classList.toggle('active', platform === 'iOS');
+            document.getElementById('selected-platform-badge').innerText = platform;
+            document.getElementById('code-filename').innerText = platform === 'Android' ? 'MainActivity.kt • Jetpack Compose' : 'ContentView.swift • SwiftUI';
+        }
+
+        function generateApp() {
+            const prompt = document.getElementById('app-prompt').value.trim();
+            if (!prompt) {
+                alert('Please describe the app you want to build first!');
+                return;
+            }
+            if (userCredits <= 0) {
+                alert('You have 0 credits left! Please upgrade your plan.');
+                document.getElementById('pricing').scrollIntoView();
+                return;
+            }
+
+            userCredits -= 1;
+            document.getElementById('nav-credits').innerText = userCredits;
+
+            const workspace = document.getElementById('ai-workspace');
+            workspace.classList.remove('hidden');
+            workspace.scrollIntoView({ behavior: 'smooth' });
+
+            const codeOutput = document.getElementById('live-code-output');
+            const phoneScreen = document.getElementById('phone-screen-content');
+            const statusTitle = document.getElementById('agent-status-title');
+            const shareBox = document.getElementById('share-box');
+
+            shareBox.classList.add('hidden');
+            statusTitle.innerText = `AI Agent is coding your ${selectedPlatform} App...`;
+            codeOutput.innerText = `// Initializing ${selectedPlatform} project...\n// Prompt: "${prompt}"\n\nimport React from 'react';\n// Generating UI components...`;
+
+            setTimeout(() => {
+                statusTitle.innerText = `✅ ${selectedPlatform} App Built & Deployed Live!`;
+                document.getElementById('agent-status-desc').innerText = 'Ready to test in the live emulator or share via link.';
+                shareBox.classList.remove('hidden');
+                shareBox.classList.add('flex');
+
+                codeOutput.innerText = `// Generated by AppZeno.io AI Agent (${selectedPlatform})\n// Idea: ${prompt}\n\nexport default function App() {\n  return (\n    <Screen style={styles.container}>\n      <Header title="My AI App" />\n      <Card>\n        <Title>${prompt.substring(0, 35)}...</Title>\n        <Button title="Get Started" onPress={() => alert('Live Action!')} />\n      </Card>\n    </Screen>\n  );\n}`;
+
+                phoneScreen.innerHTML = `
+                    <div>
+                        <div class="bg-indigo-600 text-white p-4 rounded-2xl shadow-md mb-4">
+                            <span class="text-[10px] uppercase tracking-wider bg-white/20 px-2 py-0.5 rounded-full">${selectedPlatform} Build</span>
+                            <h4 class="font-bold text-base mt-2 leading-snug">${prompt.substring(0, 45)}</h4>
+                        </div>
+                        <div class="space-y-2.5">
+                            <div class="p-3 bg-white rounded-xl border border-zinc-200 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs font-bold text-zinc-800">Feature Module 01</div>
+                                    <div class="text-[10px] text-zinc-500">AI Auto-configured</div>
+                                </div>
+                                <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">→</span>
+                            </div>
+                            <div class="p-3 bg-white rounded-xl border border-zinc-200 shadow-sm flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs font-bold text-zinc-800">User Dashboard</div>
+                                    <div class="text-[10px] text-zinc-500">Ready for database sync</div>
+                                </div>
+                                <span class="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs">✓</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="alert('App button clicked inside emulator!')" class="w-full py-2.5 bg-zinc-900 text-white text-xs font-bold rounded-xl shadow">
+                        Launch Action
+                    </button>
+                `;
+            }, 1800);
+        }
+
+        function buyCredits(amount, planName) {
+            userCredits += amount;
+            document.getElementById('nav-credits').innerText = userCredits;
+            document.getElementById('nav-plan').innerText = planName;
+            alert(`🎉 Added ${amount} Credits (${planName} Plan)!`);
+        }
+
+        function copyShareLink() {
+            const copyText = document.getElementById("app-share-url");
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            alert("Preview link copied to clipboard!");
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(document.getElementById("live-code-output").innerText);
+            alert("Source code copied!");
+        }
+
+        function openLoginModal() { alert("Google OAuth Login Modal Triggered!"); }
+        function openApiModal() { alert("API Key Configuration Modal Triggered!"); }
+    </script>
+</body>
+</html>
